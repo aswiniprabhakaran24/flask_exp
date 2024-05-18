@@ -218,17 +218,17 @@ text-align: center;
 </head>
 <body>
 <h1><b>WELDING REMOTE</b></h1>
-
+<form action="/wel" method="post">
 <div class="rec">
     <div class="com">
-      <label for"com"><b>COM</b></label>
+      <label for="com"><b>COM</b></label>
 	</div> 
 	
 	  <select class="moc" name="num" id="channel";>
-       <option value="0">0</option>
-       <option value="1">1</option>
-       <option value="2">2</option>
-	   <option value="3">3</option>
+       <option value="0">COM0</option>
+       <option value="1">COM1</option>
+       <option value="2">COM2</option>
+	   <option value="3">COM3</option>
      </select>
 	 <button class="open"><b>Open</b></button>
 	 <button class="close"><b>Close</b></button> 
@@ -238,8 +238,8 @@ text-align: center;
  <div class="rec"> 
     <div class="square">
 	  <div class="sta">
-        <label for"status"><b>STATUS</b></label>
-		<input class="centered"type="text" id="cent" name="status">
+        <label for="status"><b>STATUS</b></label>
+		<input class="centered" type="text" id="status" name="status">
         <button class="read"><b>Read</b></button>
 	    <button class="write"><b>Write</b></button>
 	  </div>
@@ -247,19 +247,19 @@ text-align: center;
 	
 	<div class="square"> 
 	  <div class="device">
-        <label for"name"><b>DEVICE NAME</b></label>
+        <label for="name"><b>DEVICE NAME</b></label>
 	  
-        <input class="dev" type="text" id="ams" name="device">
+        <input class="dev" type="text" id="name" name="name">
       </div>
 	  <div class="device">
-        <label for"mod"><b>MODE NUMBER</b></label>
+        <label for="mod"><b>MODE NUMBER</b></label>
 	  
-        <input class="dev" type="text" id="cre" name="device">
+        <input class="dev" type="text" id="mod" name="mod">
       </div>
       <div class="device">
-        <label for"id"><b>DEVICE ID</b></label>
+        <label for="ide"><b>DEVICE ID</b></label>
 	  
-        <input class="dev" type="text" id="ice" name="device">
+        <input class="dev" type="text" id="ide" name="ide">
       </div>
     </div>
  
@@ -270,9 +270,9 @@ text-align: center;
     <div class="rectangle1">
 	  
 	  <div class="channel">
-      <label for"channel"><b>Channel Number</b></label>
+      <label for="channel"><b>Channel Number</b></label>
 	  
-	  <select class="drop"  name="num" id="channel";>
+	  <select class="drop"  name="channel" id="channel";>
        <option value="0">0</option>
        <option value="1">1</option>
        <option value="2">2</option>
@@ -283,7 +283,7 @@ text-align: center;
 	
 	
 	<div class="channel">
-      <label for"channel"><b>Source Address</b></label>
+      <label for="channel"><b>Source Address</b></label>
 	
 	 <select class="drop" name="num" id="souc";>
        <option value="0">0</option>
@@ -295,10 +295,10 @@ text-align: center;
 	
    
 	<div class="channel">
-	  <label for"sync"><b>Sync Address</b></label>
+	  <label for="sync"><b>Sync Address</b></label>
 	
 	
-	  <select class="drop" name="num" id="sync";>
+	  <select class="drop" name="sync" id="sync";>
        <option value="0">0</option>
        <option value="1">1</option>
        <option value="2">2</option>
@@ -308,10 +308,10 @@ text-align: center;
 	
 	
 	<div class="channel">
-	  <label for"dest"><b>Destination Address</b></label>
+	  <label for="dest"><b>Destination Address</b></label>
 	
 	
-	  <select class="drop" name="num" id="dest";>
+	  <select class="drop" name="dest" id="dest";>
        <option value="0">0</option>
        <option value="1">1</option>
        <option value="2">2</option>
@@ -320,7 +320,7 @@ text-align: center;
     </div>
 	
 	<div class="channel">
-	  <label for"sec"><b>Secure Transmission</b></label>
+	  <label for="sec"><b>Secure Transmission</b></label>
 	
 	
 	  <select class="drop" name="num" id="transm";>
@@ -336,9 +336,9 @@ text-align: center;
   <div class="rectangle1">
    
    <div class="first">
-	  <label for"fir"><b>First Key</b></label>
+	  <label for="fir"><b>First Key</b></label>
 	
-	  <select class="key" name="num" id="well";>
+	  <select class="key" name="fir" id="fir";>
        <option value="none">NONE</option>
        <option value="start">START KEY</option>
        <option value="up">UP KEY</option>
@@ -348,9 +348,9 @@ text-align: center;
 	</div>
 	
 	<div class="first">
-	  <label for"sec"><b>Second Key</b></label>
+	  <label for="sec"><b>Second Key</b></label>
 	
-	  <select class="key" name="num" id="riv";>
+	  <select class="key" name="sec" id="sec";>
        <option value="none">NONE</option>
        <option value="start">START KEY</option>
        <option value="up">UP KEY</option>
@@ -360,9 +360,9 @@ text-align: center;
 	</div>
   
     <div class="first">
-	  <label for"std"><b>Stand By Time Minute</b></label>
+	  <label for="std"><b>Stand By Time Minute</b></label>
 	
-	  <select class="key" name="num" id="time";>
+	  <select class="key" name="std" id="std";>
        <option value="0.5">0.5</option>
        <option value="1">1</option>
        <option value="1.5">1.5</option>
@@ -377,9 +377,9 @@ text-align: center;
 	</div>
 	
 	<div class="first">
-	  <label for"pow"><b>Transmitter Power</b></label>
+	  <label for="pow"><b>Transmitter Power</b></label>
 	
-	  <select class="key" name="num" id="trans";>
+	  <select class="key" name="pow" id="pow";>
        <option value="-30">-30</option>
        <option value="-20">-20</option>
        <option value="-15">-15</option>
@@ -392,9 +392,9 @@ text-align: center;
 	</div>
 	
 	<div class="first">
-	  <label for"batt"><b>Low battery V</b></label>
+	  <label for="batt"><b>Low battery V</b></label>
 	
-	  <select class="key" name="num" id="low";>
+	  <select class="key" name="batt" id=""batt"";>
        <option value="2">2</option>
        <option value="2.2">2.2</option>
        <option value="2.4">2.4</option>
@@ -408,6 +408,6 @@ text-align: center;
   </div>
 </div>  
 </div>   
-
+</form>
 </body>
 </html>
