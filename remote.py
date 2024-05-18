@@ -34,6 +34,7 @@ def receive_data():
     ser.close()
     return render_template('wel.html', received_hex=received_hex)
     
+    
 
 if __name__ == "__main__":
     try:
