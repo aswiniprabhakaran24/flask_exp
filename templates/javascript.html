@@ -13,7 +13,7 @@
             fetch('http://localhost:5000/up')
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById('output').innerText = data;
+                    document.getElementById('output').innerText = received_hex;
                 })
                 .catch(error => {
                     console.error('Error fetching data:',error);
