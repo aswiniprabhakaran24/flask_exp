@@ -10,14 +10,19 @@
 
     <script>
         function fetchData() {
-            fetch('http://localhost:5000/up')
-                .then(response => response.text())
+            fetch('http://localhost:5000/up') 
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
                 .then(data => {
-                    document.getElementById('output').innerText = received_hex;
+                    document.getElementById('output').innerText = data;
                 })
                 .catch(error => {
-                    console.error('Error fetching data:',error);
-                    document.getElementById('output').innerText = "Error fetching data";
+                    console.error('Error fetching data:', error);
+                    document.getElementById('output').innerText = "Error fetching data: " + error.message;
                 });
         }
     </script>

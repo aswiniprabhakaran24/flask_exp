@@ -61,9 +61,6 @@
                 <label for="channel"><b>Source Address</b></label>
                 <select class="drop" name="souc" id="souc">
                     <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
                 </select>
             </div>
             <div class="channel">
@@ -157,9 +154,30 @@
             </div>
         </div>
     </div>
-</div>  
+</div> 
+ <script>
+        function updateValues(receivedData) {
+            document.getElementById('channel').value = receivedData['Channel'];
+            document.getElementById('souc').value = receivedData['Source Address'];
+            document.getElementById('sync').value = receivedData['Sync Address'];
+            document.getElementById('dest').value = receivedData['Destination Address'];
+        }
 
-<script type="text/javascript" src="../style/welding.js"></script>
-
+        function displayData() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/up', true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+                        var receivedData = JSON.parse(xhr.responseText);
+                        updateValues(receivedData);
+                    } else {
+                        console.error('Request failed: ' + xhr.status);
+                    }
+                }
+            };
+            xhr.send();
+        }
+    </script>
 </body>
 </html>

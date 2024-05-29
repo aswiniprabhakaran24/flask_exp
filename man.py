@@ -1,6 +1,6 @@
 import serial
-from flask import Flask, render_template, request
-from flask_cors import CORS 
+from flask import Flask, request, Response, render_template
+from flask_cors import CORS
 import time
 
 app = Flask(__name__)
@@ -13,31 +13,32 @@ def send_hex(hex_number, ser):
 
 def receive_hex(ser):
     received_bytes = ser.read_all()
-    hex_number = received_bytes.hex()
-    return hex_number
+    return received_bytes
 
-@app.route('/up', methods=['GET','POST'])
+def parse_received_data(received_bytes, hex_num):
+    parsed_data = {}
+    try:
+        received_hex = received_bytes.hex()
+        print("Received hex:", received_hex)
+        if hex_num == "0102040605":
+            parsed_data['Channel'] = received_bytes[3]
+            parsed_data['Sync Address'] = received_bytes[7]
+            parsed_data['Destination Address'] = received_bytes[13]
+            parsed_data['Source Address'] = received_bytes[15]
+            parsed_data['Standby Time'] = received_bytes[11]
+            parsed_data['Transmitter Power'] = received_bytes[9]
+    except Exception as e:
+        print("Error parsing received data:", e)
+    return parsed_data
+
+@app.route('/up')
 def index():
-    received_hex=0
-    if request.method == 'POST':
-        ser = serial.Serial('COM2', 9600)
-        hex_number = request.form['hex_data']
-        print(hex_number)
-        time.sleep(1)
-        hex_to_send = hex_number
-        send_hex(hex_to_send, ser)
-        time.sleep(0.5)
-        received_hex = receive_hex(ser)
-        print("Received:", received_hex)
-        ser.close()
-    return received_hex
-
-@app.route('/remo', methods=['GET','POST'])
-def send_data():
-    if request.method == 'POST':
-        ser = serial.Serial('COM2', 9600)
-        hex_number = request.form['hex_data']
-        print(hex_number)
+    try:
+        ser = serial.Serial('COM2', 9600) 
+        hex_number = '0102040605' 
+        if 'hex_data' in request.args:
+            hex_number = request.args['hex_data']
+        print("Hex number:", hex_number)
         time.sleep(1)
         hex_to_send = hex_number
         send_hex(hex_to_send, ser)
@@ -45,9 +46,17 @@ def send_data():
         received_hex = receive_hex(ser)
         print("Received:", received_hex)
         
+        parsed_data = parse_received_data(received_hex, hex_number)
+        for key, value in parsed_data.items():
+            print(f"{key}: {value}")
         ser.close()
-        return render_template('remo.html', received_hex=received_hex)
-    return render_template('remo.html')
+        return render_template('javascript.html', received_data=parsed_data, )
+    except serial.SerialException as e:
+        print("Serial port error:", e)
+        return "Error: Serial port not available"
+    except Exception as e:
+        print("Error:", e)
+        return "Error: Something went wrong"
 
 if __name__ == "__main__":
     try:
