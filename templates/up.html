@@ -50,35 +50,26 @@
         <div class="rectangle1">
             <div class="channel">
                 <label for="channel"><b>Channel Number</b></label>
-                <select class="drop" name="channel" id="channel">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
+                <select class="drop" name="channel" id="chnumber">
+
                 </select>
             </div>
             <div class="channel">
                 <label for="channel"><b>Source Address</b></label>
-                <select class="drop" name="souc" id="souc">
-                    <option value="0">0</option>
+                <select class="drop" name="souc1" id="souc">
+                
                 </select>
             </div>
             <div class="channel">
                 <label for="sync"><b>Sync Address</b></label>
                 <select class="drop" name="sync" id="sync">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
+                    
                 </select>
             </div>
             <div class="channel">
                 <label for="dest"><b>Destination Address</b></label>
                 <select class="drop" name="dest" id="dest">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
+                    
                 </select>
             </div>
             <div class="channel">
@@ -114,7 +105,7 @@
             </div>
             <div class="first">
                 <label for="std"><b>Stand By Time Minute</b></label>
-                <select class="key" name="std" id="std">
+                <select class="key" name="std1" id="std">
                     <option value="0.5">0.5</option>
                     <option value="1">1</option>
                     <option value="1.5">1.5</option>
@@ -129,7 +120,7 @@
             </div>
             <div class="first">
                 <label for="pow"><b>Transmitter Power</b></label>
-                <select class="key" name="pow" id="pow">
+                <select class="key" name="pow1" id="pow">
                     <option value="-30">-30</option>
                     <option value="-20">-20</option>
                     <option value="-15">-15</option>
@@ -155,29 +146,142 @@
         </div>
     </div>
 </div> 
- <script>
-        function updateValues(receivedData) {
-            document.getElementById('channel').value = receivedData['Channel'];
-            document.getElementById('souc').value = receivedData['Source Address'];
-            document.getElementById('sync').value = receivedData['Sync Address'];
-            document.getElementById('dest').value = receivedData['Destination Address'];
-        }
-
-        function displayData() {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/up', true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    if (xhr.status == 200) {
-                        var receivedData = JSON.parse(xhr.responseText);
-                        updateValues(receivedData);
-                    } else {
-                        console.error('Request failed: ' + xhr.status);
-                    }
+<script>
+    function fetchData() {
+        fetch('http://localhost:5000/up')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-            };
-            xhr.send();
-        }
-    </script>
+                return response.json();
+            })
+            .then(data => {
+                console.log('Received data:', data); 
+                const channelData = data['Channel'];
+                console.log('Channel data:', channelData);
+                const syncData = data['Sync Address'];
+                console.log('Sync Address data:', syncData);
+                const destData = data['Destination Address'];
+                console.log('Destination Address data:', destData);
+                const sourceData = data['Source Address']; 
+                console.log('Source Address data:', sourceData);
+                const stdData = data['Standby Time'];
+                console.log('Standby Time data:', stdData);
+                const powData = data['Transmitter Power'];
+                console.log('Transmitter Power data:', powData);
+
+                const chnumberSelect = document.getElementById('chnumber');
+                const syncSelect = document.getElementById('sync');
+                const destSelect = document.getElementById('dest');
+				const sourceSelect = document.getElementById('souc');
+				const standbySelect = document.getElementById('std');
+				const transSelect = document.getElementById('pow');
+                chnumberSelect.innerHTML = "";
+                syncSelect.innerHTML = "";
+                destSelect.innerHTML = "";
+				sourceSelect.innerHTML = "";
+				standbySelect.innerHTML = "";
+				transSelect.innerHTML = "";
+
+                if (Array.isArray(channelData)) {
+                    channelData.forEach(channel => {
+                        const option = document.createElement('option');
+                        option.value = channel;
+                        option.textContent = channel;
+                        chnumberSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = channelData;
+                    option.textContent = channelData;
+                    chnumberSelect.appendChild(option);
+                }
+                
+                if (Array.isArray(syncData)) {
+                    syncData.forEach(syncAddress => { 
+                        const option = document.createElement('option');
+                        option.value = syncAddress;
+                        option.textContent = syncAddress;
+                        syncSelect.appendChild(option); 
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = syncData;
+                    option.textContent = syncData;
+                    syncSelect.appendChild(option);
+                }
+
+                if (Array.isArray(destData)) {
+                    destData.forEach(destAddress => { 
+                        const option = document.createElement('option');
+                        option.value = destAddress;
+                        option.textContent = destAddress;
+                        destSelect.appendChild(option); 
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = destData;
+                    option.textContent = destData;
+                    destSelect.appendChild(option);
+                }
+				if (Array.isArray(sourceData)) {
+                    sourceData.forEach(sourceAddress => { 
+                        const option = document.createElement('option');
+                        option.value = sourceAddress;
+                        option.textContent = soucAddress;
+                        sourceSelect.appendChild(option); 
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = sourceData;
+                    option.textContent = sourceData;
+                    sourceSelect.appendChild(option);
+                }
+				if (Array.isArray(stdData)) {
+                    stdData.forEach(stdAddress => { 
+                        const option = document.createElement('option');
+                        option.value = stdAddress;
+                        option.textContent = stdAddress;
+                        standbySelect.appendChild(option); 
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = stdData;
+                    option.textContent = stdData;
+                    standbySelect.appendChild(option);
+                }
+				if (Array.isArray(powData)) {
+                    powData.forEach(transmission => {
+                        const option = document.createElement('option');
+                        option.value = transmission;
+                        option.textContent = transmission;
+                        transSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = powData;
+                    option.textContent = powData;
+                    transSelect.appendChild(option);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                const chnumberSelect = document.getElementById('chnumber');
+                const syncSelect = document.getElementById('sync');
+                const destSelect = document.getElementById('dest');
+				const sourceSelect = document.getElementById('souc');
+				const standbySelect = document.getElementById('std');
+				const transSelect = document.getElementById('pow');
+                chnumberSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
+                syncSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
+                destSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
+				sourceSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
+				standbySelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
+				transSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
+            });
+    }
+    window.onload = fetchData;
+</script>
+
 </body>
 </html>
