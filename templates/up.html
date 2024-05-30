@@ -25,8 +25,8 @@
         <div class="sta">
             <label for="status"><b>STATUS</b></label>
             <input class="centered" type="text" id="status" name="status">
-            <button class="read"><b>Read</b></button>
-            <button onclick="displayData()" class="write"><b>Write</b></button>
+            <button onclick=readclick()  class="read" id="readbutton"><b>Read</b></button>
+            <button onclick=writeclick() class="write" id="writebutton"><b>Write</b></button>
 
         </div>
     </div>
@@ -74,7 +74,7 @@
             </div>
             <div class="channel">
                 <label for="sec"><b>Secure Transmission</b></label>
-                <select class="drop" name="transm" id="transm">
+                <select class="drop" name="transm1" id="transm">
                     <option value="enable">ENABLE</option>
                     <option value="disable">DISABLE</option>
                 </select>
@@ -85,7 +85,7 @@
         <div class="rectangle1">
             <div class="first">
                 <label for="fir"><b>First Key</b></label>
-                <select class="key" name="fir" id="fir">
+                <select class="key" name="fir1" id="fir">
                     <option value="none">NONE</option>
                     <option value="start">START KEY</option>
                     <option value="up">UP KEY</option>
@@ -95,7 +95,7 @@
             </div>
             <div class="first">
                 <label for="sec"><b>Second Key</b></label>
-                <select class="key" name="sec" id="sec">
+                <select class="key" name="sec1" id="sec">
                     <option value="none">NONE</option>
                     <option value="start">START KEY</option>
                     <option value="up">UP KEY</option>
@@ -133,7 +133,7 @@
             </div>
             <div class="first">
                 <label for="batt"><b>Low battery V</b></label>
-                <select class="key" name="batt" id="batt">
+                <select class="key" name="batt1" id="batt">
                     <option value="2">2</option>
                     <option value="2.2">2.2</option>
                     <option value="2.4">2.4</option>
@@ -147,7 +147,13 @@
     </div>
 </div> 
 <script>
-    function fetchData() {
+function readclick() {
+	console.log("buttonclick")
+}
+function writeclick() {
+	console.log("writebutton")
+}
+    function readclick() {
         fetch('http://localhost:5000/up')
             .then(response => {
                 if (!response.ok) {
@@ -155,6 +161,8 @@
                 }
                 return response.json();
             })
+			
+				
             .then(data => {
                 console.log('Received data:', data); 
                 const channelData = data['Channel'];
@@ -169,19 +177,36 @@
                 console.log('Standby Time data:', stdData);
                 const powData = data['Transmitter Power'];
                 console.log('Transmitter Power data:', powData);
-
+				const firData = data['Combo First Key'];
+                console.log('Combo First Key data:', firData);
+				const secData = data['Combo Second Key'];
+                console.log('Combo Second Key data:', secData);
+				const transmData = data['Combo Secure'];
+                console.log('Combo Secure data:', transmData);
+				const battData = data['Low battery v'];
+                console.log('Low battery v data:', battData);
+				
                 const chnumberSelect = document.getElementById('chnumber');
                 const syncSelect = document.getElementById('sync');
                 const destSelect = document.getElementById('dest');
 				const sourceSelect = document.getElementById('souc');
 				const standbySelect = document.getElementById('std');
 				const transSelect = document.getElementById('pow');
-                chnumberSelect.innerHTML = "";
+				const firstSelect = document.getElementById('fir');
+				const secondSelect = document.getElementById('sec');
+				const secureSelect = document.getElementById('transm');
+				const lowSelect = document.getElementById('batt');
+				
+				chnumberSelect.innerHTML = "";
                 syncSelect.innerHTML = "";
                 destSelect.innerHTML = "";
 				sourceSelect.innerHTML = "";
 				standbySelect.innerHTML = "";
 				transSelect.innerHTML = "";
+				firstSelect.innerHTML = "";
+				secondSelect.innerHTML = "";
+				secureSelect.innerHTML = "";
+				lowSelect.innerHTML = "";
 
                 if (Array.isArray(channelData)) {
                     channelData.forEach(channel => {
@@ -263,6 +288,58 @@
                     option.textContent = powData;
                     transSelect.appendChild(option);
                 }
+				if (Array.isArray(firData)) {
+                    firData.forEach(firstkey => {
+                        const option = document.createElement('option');
+                        option.value = firstkey;
+                        option.textContent = firstkey;
+                        firstSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = firData;
+                    option.textContent = firData;
+                    firstSelect.appendChild(option);
+                }
+				if (Array.isArray(secData)) {
+                    secData.forEach(secondkey => {
+                        const option = document.createElement('option');
+                        option.value = secondkey;
+                        option.textContent = secondkey;
+                        secondSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = secData;
+                    option.textContent = secData;
+                    secondSelect.appendChild(option);
+                }
+				if (Array.isArray(transmData)) {
+                    transmData.forEach(secure => {
+                        const option = document.createElement('option');
+                        option.value = secure;
+                        option.textContent = secure;
+                        secureSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = transmData;
+                    option.textContent = transmData;
+                    secureSelect.appendChild(option);
+                }
+				if (Array.isArray(battData)) {
+                    battData.forEach(battery => {
+                        const option = document.createElement('option');
+                        option.value = battery;
+                        option.textContent = battery;
+                        lowSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = battData;
+                    option.textContent = battData;
+                    lowSelect.appendChild(option);
+                }
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -272,15 +349,24 @@
 				const sourceSelect = document.getElementById('souc');
 				const standbySelect = document.getElementById('std');
 				const transSelect = document.getElementById('pow');
+				const firstSelect = document.getElementById('fir');
+				const secondSelect = document.getElementById('sec');
+				const secureSelect = document.getElementById('transm');
+				const lowSelect = document.getElementById('batt');
                 chnumberSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
                 syncSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
                 destSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
 				sourceSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
 				standbySelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
 				transSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
+				firstSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
+				secondSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
+				secureSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
+				lowSelect.innerHTML = "<option>Error fetching data: " + error.message + "</option>";
             });
+			
     }
-    window.onload = fetchData;
+    
 </script>
 
 </body>
