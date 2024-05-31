@@ -75,7 +75,14 @@ def index():
     except Exception as e:
         print("Error:", e)
         return "Error: Something went wrong"
+        
+@app.route('/analog')
+def analog():
+    return render_template('analog.html')
 
+@app.route('/relay')
+def relay():
+    return render_template('relay.html')
 if __name__ == "__main__":
     try:
         app.run()

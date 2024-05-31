@@ -6,6 +6,7 @@
 
 <body>
 <h1><b>WELDING REMOTE</b></h1>
+
 <div class="rec">
     <div class="com">
         <label for="com"><b>COM</b></label>
@@ -45,7 +46,14 @@
         </div>
     </div>
 </div>
-<div class="rect">
+<div class="tab">
+  <button class="tablinks" onclick=screen1()>Device Configurtion Settings</button>
+   <button class="tablinks" id="relayContainer" onclick=screen2()>Relay Settings</button>
+    <button class="tablinks" id="analogContainer"  onclick=screen3()>Analog Configuration Settings</button>
+</div>
+
+<div class="rect" id="screen1">
+
     <div class="rectangle">
         <div class="rectangle1">
             <div class="channel">
@@ -146,10 +154,32 @@
         </div>
     </div>
 </div> 
+<!-- <div class="rect" id="screen2"> -->
+	<!-- <label for="emp" class="sta"><b>screen2</b></label> -->
+<!-- </div> -->
+<!-- <div class="rect" id="screen3"> -->
+	<!-- <label for="emp1" class="sta"><b>screen3</b></label> -->
+<!-- </div> -->
 <script>
-function readclick() {
-	console.log("buttonclick")
+
+
+
+function screen1() {
+    document.getElementById("screen1").style.display = "block";
+    <!-- document.getElementById("screen2").style.display = "block"; -->
 }
+
+function screen2() {
+    <!-- document.getElementById("screen1").style.display = "none"; -->
+	document.getElementById("screen1").style.display = "none";
+    
+}
+
+function screen3() {
+    document.getElementById("screen3").style.display = "block";
+    console.log("screen3 shown");
+}
+
 function writeclick() {
 	console.log("writebutton")
 }
